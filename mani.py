@@ -2,6 +2,7 @@
 import pygame
 from pygame.locals import *
 import constantes
+import time
 
 class Snake():
     
@@ -10,6 +11,7 @@ class Snake():
         self.snake332 = pygame.image.load("imagenes\segmented-circle-arrow.png")
         self.x = 100
         self.y = 100
+        self.direccion = "right"
 
     def draw(self):
         self.padre_window.fill(constantes.Color)
@@ -17,22 +19,31 @@ class Snake():
         pygame.display.flip()
 
     def move_left(self):
-        self.x -= 10
-        self.draw()
+        self.direccion = "left"
 
     def move_right(self):
-        self.x += 10    
-        self.draw()
+        self.direccion = "right"
 
     def move_up(self):
-        self.y -= 10
-        self.draw()
+        self.direccion = "up"
 
     def move_dawn(self):
-        self.y += 10
-        self.draw()
-        
+        self.direccion = "down"
 
+    def walk(self):
+        if self.direccion == "left":
+            self.x -= 10
+
+        if self.direccion == "right":
+            self.x += 10
+        
+        if self.direccion == "up":
+            self.y -= 10
+        
+        if self.direccion == "down":
+            self.y += 10
+
+        self.draw()
 
 class Game():
     def __init__(self):
@@ -67,7 +78,10 @@ class Game():
                         self.snake.move_dawn()
 
                 elif event.type == QUIT:
-                    running = False 
+                    running = False
+
+            self.snake.walk()
+            time.sleep(0.1)
 
 
 game = Game()
