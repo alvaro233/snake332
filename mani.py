@@ -3,19 +3,38 @@ import pygame
 from pygame.locals import *
 import constantes
 import time
+import random
+
+class orange():
+    def __init__(self, padre_window):
+        self.padre_window = padre_window
+        self.image = pygame.image.load("imagenes\orange.png")
+        self.x = 120
+        self.y = 120
+
+    def draw(self):
+        self.padre_window.blit(self.image, (self.x, self.y))
+        pygame.display.flip()
+
+        
 
 class Snake():
     
-    def __init__(self, padre_window):
+    def __init__(self, padre_window,lenght):
         self.padre_window = padre_window
         self.snake332 = pygame.image.load("imagenes\segmented-circle-arrow.png")
-        self.x = 100
-        self.y = 100
+       
         self.direccion = "right"
+        self.lenght = lenght
+        self.x = [24]*lenght
+        self.y = [24]*lenght
+
 
     def draw(self):
+        
         self.padre_window.fill(constantes.Color)
-        self.padre_window.blit(self.snake332, (self.x, self.y))
+        for A in range(self.lenght):
+            self.padre_window.blit(self.snake332, (self.x[A], self.y[A]))
         pygame.display.flip()
 
     def move_left(self):
@@ -31,17 +50,23 @@ class Snake():
         self.direccion = "down"
 
     def walk(self):
+        # update body
+        for A in range(self.lenght-1, 0, -1):
+            self.x[A] = self.x[A-1]
+            self.y[A] = self.y[A-1]
+
+            # updite head 
         if self.direccion == "left":
-            self.x -= 10
+            self.x[0] -= 10
 
         if self.direccion == "right":
-            self.x += 10
+            self.x[0] += 10
         
         if self.direccion == "up":
-            self.y -= 10
+            self.y[0] -= 10
         
         if self.direccion == "down":
-            self.y += 10
+            self.y[0] += 10
 
         self.draw()
 
@@ -53,8 +78,10 @@ class Game():
         Icono = pygame.image.load("imagenes\snake.png")
         pygame.display.set_icon(Icono)
         self.Ventana.fill(constantes.Color)
-        self.snake = Snake(self.Ventana)
+        self.snake = Snake(self.Ventana, 3)
         self.snake.draw()
+        self.orange = orange(self.Ventana)
+        self.orange.draw()
         pygame.display.update()
 
     def run(self): 
@@ -64,7 +91,7 @@ class Game():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
                         running = False
-
+                        
                     if event.key == K_LEFT:
                         self.snake.move_left()
 
@@ -81,6 +108,7 @@ class Game():
                     running = False
 
             self.snake.walk()
+            self.orange.draw
             time.sleep(0.1)
 
 
