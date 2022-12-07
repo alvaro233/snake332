@@ -1,4 +1,7 @@
-#import libreries 
+#git status
+#git add .
+# git commit -m "mensaje"
+# #import libreries 
 import pygame
 from pygame.locals import *
 import constantes
@@ -16,6 +19,11 @@ class orange():
         self.padre_window.blit(self.image, (self.x, self.y))
         pygame.display.flip()
 
+    def move(self):
+        self.x = random.randint(24,776)
+        self.y = random.randint(24,576)
+    
+
         
 
 class Snake():
@@ -28,6 +36,12 @@ class Snake():
         self.lenght = lenght
         self.x = [24]*lenght
         self.y = [24]*lenght
+
+    #serpiente crese
+    def increase_lenght(self):
+        self.lenght += 1
+        self.x.append(-1)
+        self.y.append(-1)
 
 
     def draw(self):
@@ -83,6 +97,33 @@ class Game():
         self.orange = orange(self.Ventana)
         self.orange.draw()
         pygame.display.update()
+    
+    def is_colicion(self, x1, y1, x2, y2):
+        if x1 >= x2 and x1 < x2 + constantes.Snake_body:
+           if y1 >= y2 and y1 < y2 + constantes.Snake_body: 
+            return True
+        return False
+        
+    
+    def play(self):
+        self.snake.walk()
+        self.orange.draw()
+        self.display_score()
+        pygame.display.flip()
+
+        if self.is_colicion(self.snake.x[0], self.snake.y[0], self.orange.x, self.orange.y):
+            self.snake.increase_lenght()
+            self.orange.move()
+        #if self.is_colicion == False:
+            #constantes.Velocidad == 0.01
+
+
+        #score
+    def display_score(self):
+        font = pygame.font.Font("imagenes/texto ...otf", 30)
+        score = font.render(f"Puntos:{self.snake.lenght -3}", True,("red"))
+        self.Ventana.blit(score, (15, 15))
+    
 
     def run(self): 
         running = True
@@ -107,8 +148,8 @@ class Game():
                 elif event.type == QUIT:
                     running = False
 
-            self.snake.walk()
-            self.orange.draw
+            self.play()
+
             time.sleep(0.1)
 
 
