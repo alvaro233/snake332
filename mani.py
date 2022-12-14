@@ -71,16 +71,16 @@ class Snake():
 
             # updite head 
         if self.direccion == "left":
-            self.x[0] -= 10
+            self.x[0] -= 24
 
         if self.direccion == "right":
-            self.x[0] += 10
+            self.x[0] += 24
         
         if self.direccion == "up":
-            self.y[0] -= 10
+            self.y[0] -= 24
         
         if self.direccion == "down":
-            self.y[0] += 10
+            self.y[0] += 24
 
         self.draw()
 
@@ -114,6 +114,23 @@ class Game():
         if self.is_colicion(self.snake.x[0], self.snake.y[0], self.orange.x, self.orange.y):
             self.snake.increase_lenght()
             self.orange.move()
+
+        #cuerpo
+
+        for B in range(2, self.snake.lenght):
+            if self.is_colicion(self.snake.x[0], self.snake.y[0], self.snake.x[B], self.snake.y[B]):
+                print("Game over")
+                self.show_game_over()
+
+        def show_game_over(self):
+            font = pygame.font.Font("imagene/texto ...otf")
+            message1 = font.render(f"Game Over!! comeste:{self.lenght}", True, ("#black"))
+            self.window.blit(message1, (400, 300))
+            message2 = font.render(f"Juega otra ves pulsando ENTER o salte pulsando ESC", True, ("#black"))
+            self.window.blit(message2, (400, 335))
+            pygame.display.flip()
+
+
         #if self.is_colicion == False:
             #constantes.Velocidad == 0.01
 
